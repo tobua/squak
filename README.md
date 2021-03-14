@@ -1,6 +1,6 @@
 # squak
 
-<img align="right" src="https://github.com/tobua/squak/raw/master/logo.png" width="20%" alt="Squak Logo" />
+<img align="right" src="https://github.com/tobua/squak/raw/main/logo.png" width="20%" alt="Squak Logo" />
 
 Setup and build modern Web Servers in TypeScript.
 

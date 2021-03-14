@@ -29,7 +29,6 @@ configure()
 try {
   scripts[script]()
 } catch (error) {
-  // @ts-ignore TODO fix in logua pending
   log(`script ${script} exited with an error`)
 
   if (script !== 'test' && !isCI) {
