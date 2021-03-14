@@ -4,4 +4,5 @@ export interface Options {
   output: string
   pkg: Object
   tsconfig?: Object
+  gitignore?: string[]
 }

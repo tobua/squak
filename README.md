@@ -64,16 +64,19 @@ This plugin provides an extensive set of configurations aimed at working in vari
         // What's the name of the entry file, automatically adds [src/]?index.ts file if available.
         entry: 'my-server.ts',
         entry: ['rest-server.ts', 'graphql-server.ts'],
+        // Output directory for compiled files, default 'dist'.
+        output: 'node-server',
+        // Folder where tests are located, default 'test'.
+        test: 'spec',
         // Overrides for the TypeScript configuration.
         tsconfig: {
             compilerOptions: {
                 moduleResolution: 'node'
             }
         },
-        // Output directory for compiled files, default 'dist'.
-        output: 'node-server',
-        // Folder where tests are located, default 'test'.
-        test: 'spec',
+        // Additional entries to be added to gitignore, default none.
+        // Can also be entered directly into .gitignore file.
+        gitignore: [],
     }
 }
 ```
