@@ -1,7 +1,7 @@
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
 import { sync as syncGlob } from 'fast-glob'
-import objectAssignDeep from 'object-assign-deep'
+import merge from 'deepmerge'
 import { cache, getProjectBasePath, log } from './helper'
 import { Options } from './types'
 
@@ -38,7 +38,7 @@ const removeDuplicatePaths = (relativePaths: string[]) => {
 const defaultOptions = (pkg: Object) => ({
   entry: [],
   output: 'dist',
-  test: false,
+  test: 'test',
   pkg,
 })
 
@@ -55,11 +55,11 @@ export const options = cache(() => {
     log('unable to load package.json', 'error')
   }
 
-  const result: Options = defaultOptions(packageContents)
+  let result: Options = defaultOptions(packageContents)
 
   if (typeof packageContents.squak === 'object') {
     // Include project specific overrides
-    objectAssignDeep(result, packageContents.squak)
+    result = merge(result, packageContents.squak, { clone: false })
 
     if (typeof result.entry === 'string') {
       result.entry = [result.entry]
@@ -85,10 +85,11 @@ export const options = cache(() => {
 
   // Unless overriden with boolean by user, we'll only look for tests in one folder.
   if (typeof result.test === 'string') {
-    result.test =
+    const hasTests =
       syncGlob([`${result.test}/**.test.ts`], {
         cwd: getProjectBasePath(),
       }).length > 0
+    result.test = hasTests ? result.test : false
   }
 
   return result

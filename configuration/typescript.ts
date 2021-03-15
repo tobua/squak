@@ -1,4 +1,4 @@
-import objectAssignDeep from 'object-assign-deep'
+import merge from 'deepmerge'
 import { options } from '../options'
 
 export const tsconfig = () => {
@@ -7,7 +7,7 @@ export const tsconfig = () => {
   }
 
   // The local tsconfig in this package will be written and the user config is extending it.
-  const packageTSConfig: any = {
+  let packageTSConfig: any = {
     compilerOptions: {
       target: 'ESNext',
       module: 'ESNext',
@@ -27,7 +27,9 @@ export const tsconfig = () => {
   }
 
   if (options().tsconfig) {
-    objectAssignDeep(userTSConfig, options().tsconfig)
+    packageTSConfig = merge(packageTSConfig, options().tsconfig, {
+      clone: false,
+    })
   }
 
   return [userTSConfig, packageTSConfig]

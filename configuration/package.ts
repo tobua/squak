@@ -1,4 +1,6 @@
+import { join } from 'path'
 import { options } from '../options'
+import { configurationPath } from '../helper'
 
 // Old package properties users might have that should be deleted or updated.
 export const packagePropertiesToUpdate = [
@@ -13,9 +15,9 @@ export const packageJson = () => {
       production: 'squak production',
     },
     type: 'module',
-    prettier: 'padua/configuration/.prettierrc.json',
+    prettier: 'squak/configuration/.prettierrc.json',
     eslintConfig: {
-      extends: './node_modules/padua/configuration/eslint.cjs',
+      extends: join(configurationPath(), 'eslint.cjs'),
     },
     engines: {
       node: '>= 14',

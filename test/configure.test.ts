@@ -70,14 +70,13 @@ test('TypeScript Configuration is created.', () => {
 
   const contents = readFile('tsconfig.json')
 
-  console.log(contents)
-
   expect(contents.compilerOptions).toBeDefined()
   expect(contents.files).toContain('index.ts')
   expect(contents.exclude).toContain('dist')
   expect(contents.compilerOptions.baseUrl).toEqual('.')
   expect(contents.compilerOptions.outDir).toEqual('dist')
   expect(contents.compilerOptions.moduleResolution).toEqual('node')
+  expect(contents.include).not.toBeDefined()
 })
 
 test('Proper tsconfig.json with various configurations.', () => {
@@ -107,7 +106,7 @@ test('Proper tsconfig.json with various configurations.', () => {
   expect(contents.exclude).toContain('hello')
   expect(contents.compilerOptions.baseUrl).toEqual('.')
   expect(contents.compilerOptions.outDir).toEqual('hello')
-  // TODO
-  // expect(contents.compilerOptions.moduleResolution).toEqual('classic')
-  // expect(contents.include).toEqual(['./global.d.ts'])
+  expect(contents.include).toContain('spec')
+  expect(contents.compilerOptions.moduleResolution).toEqual('classic')
+  expect(contents.include).toContain('./global.d.ts')
 })

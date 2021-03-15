@@ -31,3 +31,11 @@ export const getProjectBasePath = () => {
 
   return currentWorkingDirectory
 }
+
+export const configurationPath = () => {
+  if (typeof jest !== 'undefined') {
+    return './../../../configuration'
+  }
+
+  return './node_modules/squak/configuration'
+}

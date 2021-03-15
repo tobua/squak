@@ -1,5 +1,5 @@
 export interface Options {
-  test: boolean
+  test: false | string
   entry: string[]
   output: string
   pkg: Object

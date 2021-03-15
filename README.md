@@ -66,7 +66,7 @@ This plugin provides an extensive set of configurations aimed at working in vari
         entry: ['rest-server.ts', 'graphql-server.ts'],
         // Output directory for compiled files, default 'dist'.
         output: 'node-server',
-        // Folder where tests are located, default 'test'.
+        // Folder where tests are located, default 'test', false to disable tests.
         test: 'spec',
         // Overrides for the TypeScript configuration.
         tsconfig: {

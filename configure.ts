@@ -7,7 +7,7 @@ import {
 } from 'fs'
 import { join } from 'path'
 import formatJson from 'pakag'
-import objectAssignDeep from 'object-assign-deep'
+import merge from 'deepmerge'
 import parse from 'parse-gitignore'
 import unset from 'lodash.unset'
 import deepForEach from 'deep-for-each'
@@ -66,7 +66,7 @@ const writeOnlyUserConfig = (userConfig, packageConfig, userTSConfigPath) => {
   try {
     delete userConfig.extends
     adaptConfigToRoot(packageConfig)
-    objectAssignDeep(userConfig, packageConfig)
+    userConfig = merge(userConfig, packageConfig, { clone: false })
     writeFileSync(
       userTSConfigPath,
       formatJson(JSON.stringify(userConfig), { sort: false })
@@ -133,7 +133,7 @@ export const removePropertiesToUpdate = (pkg: {}) => {
 
 export const configurePackageJson = () => {
   const packageJsonContents = options().pkg
-  const generatedPackageJson = packageJson()
+  let generatedPackageJson = packageJson()
 
   // Remove properties that should be kept up-to-date.
   removePropertiesToUpdate(packageJsonContents)
@@ -141,7 +141,9 @@ export const configurePackageJson = () => {
   // Merge existing configuration with additional required attributes.
   // Existing properties override generated configuration to allow
   // the user to configure it their way.
-  objectAssignDeep(generatedPackageJson, packageJsonContents)
+  generatedPackageJson = merge(generatedPackageJson, packageJsonContents, {
+    clone: false,
+  })
 
   // Format with prettier and sort before writing.
   writeFileSync(
