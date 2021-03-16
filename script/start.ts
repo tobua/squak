@@ -1,4 +1,4 @@
-import { exec } from 'child_process'
+import { spawn } from 'child_process'
 import { log } from '../helper'
 import { options } from '../options'
 import { build } from './build'
@@ -10,24 +10,23 @@ export const start = () => {
   build()
 
   // Run TSC Watcher and Server in parallel.
-  const child = exec(
-    `tsc --watch & nodemon -q ${options().output}/index.js`,
+  const childTsc = spawn('tsc', ['--watch'], {
+    stdio: 'inherit',
+    cwd: process.cwd(),
+  })
+
+  const childNodemon = spawn(
+    'nodemon',
+    ['-q', `${options().output}/index.js`],
     {
+      stdio: 'inherit',
       cwd: process.cwd(),
-    },
-    (error, stdout, stderr) => {
-      if (error) {
-        log(error.toString(), 'error')
-      }
-      if (stdout) {
-        log(stdout)
-      }
-      if (stderr) {
-        log(stderr, 'warning')
-      }
     }
   )
 
   // Close server manually for tests.
-  return () => child.kill()
+  return () => {
+    childTsc.kill()
+    childNodemon.kill()
+  }
 }

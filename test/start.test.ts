@@ -1,5 +1,3 @@
-import { existsSync } from 'fs'
-import { join } from 'path'
 import { execSync } from 'child_process'
 import tcpPortUsed from 'tcp-port-used'
 import {
