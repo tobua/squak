@@ -37,21 +37,21 @@ The default template includes a basic [`express`](http://npmjs.com/express) serv
 
 Run the compiler and the node server in watch mode. Use this for development.
 
-### `npx squak build`
-
-Build the project by compiling the TypeScript source files.
-
-### `npx squak production`
+### `npm run production` | `npx squak production`
 
 Build the project, prune devDependencies and then run the server.
 
-### `npx squak test` | `npm test` (if tests found)
+### `npm test` (if tests found) | `npx squak test`
 
 Run tests with `jest`.
 
 ### `npx squak lint`
 
-Lint all files in the project with ESLint and format them with Prettier.
+Lint all files in the project with `ESLint` and format them with [`Prettier`](https://prettier.io/docs/en/options.html).
+
+### `npx squak build`
+
+Build the project by compiling the TypeScript source files.
 
 ## Configuration
 
@@ -81,4 +81,4 @@ This plugin provides an extensive set of configurations aimed at working in vari
 }
 ```
 
-Changes for configuration files will be applied each time before a script is run.
+Changes for configuration files will be applied each time before a script is run. `tsconfig.json` is best configured through the `package.json` -> `squak` property. [`ESLint`](https://eslint.org/docs/user-guide/configuring) and [`jest`](https://jestjs.io/docs/configuration) can directly be adapted in their respective fields in `package.json` which will be added upon installation.
