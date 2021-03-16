@@ -14,7 +14,6 @@ export const production = () => {
   log('Starting server...')
 
   const child = exec(`node ${options().output}/index.js`, {
-    // stdio: 'inherit',
     cwd: process.cwd(),
   })
 
