@@ -11,6 +11,9 @@ import { lint } from '../script/lint'
 import { clearCache } from '../helper'
 import { configurePackageJson, configureTsconfig } from '../configure'
 
+// Increase timeout to 20 seconds when running in parallel with other tests.
+jest.setTimeout(20000)
+
 let packageContents = {}
 const initialCwd = process.cwd()
 
@@ -30,18 +33,18 @@ afterAll(() => {
   writeFile(join(initialCwd, 'package.json'), packageContents)
 })
 
-environment('configure')
+environment('lint')
 
 afterEach(clearCache)
 
 const getEslintResultsForFile = (
-  file: string,
+  fileName: string,
   results: { filePath: string }[]
 ) => {
   let match = {}
 
   results.forEach((result) => {
-    if (new RegExp(`.*\/${file}$`).test(result.filePath)) {
+    if (new RegExp(`.*/${fileName}$`).test(result.filePath)) {
       match = result
     }
   })

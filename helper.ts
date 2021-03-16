@@ -39,3 +39,32 @@ export const configurationPath = () => {
 
   return './node_modules/squak/configuration'
 }
+
+export const removeDuplicatePaths = (relativePaths: string[]) => {
+  // Checking the absolute paths for duplicates, so that './index.ts' and 'index.ts'
+  // count as duplicates.
+  const absolutePaths = relativePaths.map((path) =>
+    join(getProjectBasePath(), path)
+  )
+  const noDuplicatesSet = new Set()
+
+  const indicesToRemove = []
+
+  absolutePaths.forEach((path, index) => {
+    if (noDuplicatesSet.has(path)) {
+      indicesToRemove.push(index)
+    }
+
+    noDuplicatesSet.add(path)
+  })
+
+  // Remove biggest indices first, as otherwise indices change.
+  indicesToRemove.reverse()
+
+  indicesToRemove.forEach((index) => {
+    // Remove duplicate path in-place from relativePaths.
+    relativePaths.splice(index, 1)
+  })
+
+  return relativePaths
+}

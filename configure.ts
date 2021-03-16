@@ -19,10 +19,10 @@ import { packageJson, packagePropertiesToUpdate } from './configuration/package'
 import { tsconfig } from './configuration/typescript'
 
 const writeUserAndPackageConfig = (
-  userConfig,
-  packageConfig,
-  userTSConfigPath,
-  packageTSConfigPath
+  userConfig: {},
+  packageConfig: {},
+  userTSConfigPath: string,
+  packageTSConfigPath: string
 ) => {
   try {
     writeFileSync(
@@ -51,7 +51,7 @@ const writeUserAndPackageConfig = (
 
 // remove ../../.. to place config in project root.
 const adaptConfigToRoot = (packageConfig) => {
-  deepForEach(packageConfig, (value, key, subject) => {
+  deepForEach(packageConfig, (value: any, key: string, subject: Object) => {
     const baseFromPackagePath = '../../../'
     if (typeof value === 'string' && value.includes(baseFromPackagePath)) {
       subject[key] = value.replace(baseFromPackagePath, '')
@@ -66,10 +66,12 @@ const writeOnlyUserConfig = (userConfig, packageConfig, userTSConfigPath) => {
   try {
     delete userConfig.extends
     adaptConfigToRoot(packageConfig)
-    userConfig = merge(userConfig, packageConfig, { clone: false })
     writeFileSync(
       userTSConfigPath,
-      formatJson(JSON.stringify(userConfig), { sort: false })
+      formatJson(
+        JSON.stringify(merge(userConfig, packageConfig, { clone: false })),
+        { sort: false }
+      )
     )
   } catch (_) {
     log(

@@ -9,7 +9,7 @@
     "test": "padua test",
     "start": "padua watch",
     "build": "padua build",
-    "postinstall": "skip-local-postinstall && node dist/installation.js"
+    "postinstall": "skip-local-postinstall dist/installation.js"
   },
   "padua": {
     "entry": [
