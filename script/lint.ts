@@ -16,7 +16,7 @@ export const lint = async () => {
   // CommonJS named exports not supported.
   const { ESLint } = eslint
   const linter = new ESLint({
-    fix: false,
+    fix: true,
     extensions: ['.ts'],
   })
 

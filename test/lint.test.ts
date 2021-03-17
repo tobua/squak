@@ -79,7 +79,7 @@ test('Proper tsconfig.json with various configurations.', async () => {
   expect(nestedContents).toContain('test = 5\nconsole')
   // Proper trim, semicolons removed.
   expect(testContents).toContain(
-    `{\n  let test = 5\n  expect(5).toEqual(test)\n}`
+    `{\n  const test = 5\n  expect(5).toEqual(test)\n}`
   )
 
   const indexResults = getEslintResultsForFile('index.ts', eslintResults)
@@ -92,13 +92,13 @@ test('Proper tsconfig.json with various configurations.', async () => {
     eslintResults
   )
 
-  expect(indexResults.errorCount).toEqual(2)
+  expect(indexResults.errorCount).toEqual(0)
   expect(indexResults.warningCount).toEqual(1)
 
-  expect(nestedResults.errorCount).toEqual(1)
+  expect(nestedResults.errorCount).toEqual(0)
   expect(nestedResults.warningCount).toEqual(1)
 
-  expect(testResults.errorCount).toEqual(1)
+  expect(testResults.errorCount).toEqual(0)
   expect(testResults.warningCount).toEqual(0)
 })
 
@@ -128,4 +128,31 @@ test('eslintConfig property in package.json is applied.', async () => {
   // No warning or errors for console statement and constant let variable.
   expect(indexResults.errorCount).toEqual(0)
   expect(indexResults.warningCount).toEqual(0)
+})
+
+test('Rules fixable by eslint are fixed in file.', async () => {
+  // This is someshow required to run multiple lint tests in a single file.
+  jest.resetModules()
+  prepare([
+    packageJson('eslint-fix'),
+    file('index.ts', `const test = !!!false; console.log(test)`),
+  ])
+
+  configurePackageJson()
+  configureTsconfig()
+
+  // Doesn't require lint configuration in package.json
+  const eslintResults = await lint()
+
+  const indexResults = getEslintResultsForFile('index.ts', eslintResults)
+  const indexContents = readFile('index.ts')
+
+  // Fixed rules aren't reported.
+  expect(indexResults.errorCount).toEqual(0)
+  // Warning for console statement.
+  expect(indexResults.warningCount).toEqual(1)
+  expect(indexResults.messages[0].ruleId).toEqual('no-console')
+
+  expect(indexContents).not.toContain('!!')
+  expect(indexContents).toContain('!false')
 })
