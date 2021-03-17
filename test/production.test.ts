@@ -14,8 +14,8 @@ import { configure } from '../configure'
 import { production } from '../script/production'
 import { clearCache } from '../helper'
 
-// Increase timeout to 20 seconds when running in parallel with other tests.
-jest.setTimeout(20000)
+// Increase timeout to 50 seconds when running in parallel with other tests.
+jest.setTimeout(50000)
 
 environment('production')
 

@@ -11,9 +11,6 @@ import { lint } from '../script/lint'
 import { clearCache } from '../helper'
 import { configurePackageJson, configureTsconfig } from '../configure'
 
-// Increase timeout to 20 seconds when running in parallel with other tests.
-jest.setTimeout(20000)
-
 let packageContents = {}
 const initialCwd = process.cwd()
 
@@ -103,4 +100,32 @@ test('Proper tsconfig.json with various configurations.', async () => {
 
   expect(testResults.errorCount).toEqual(1)
   expect(testResults.warningCount).toEqual(0)
+})
+
+test('eslintConfig property in package.json is applied.', async () => {
+  // This is someshow required to run multiple lint tests in a single file.
+  jest.resetModules()
+  prepare([
+    packageJson('configuring-eslint', {
+      eslintConfig: {
+        rules: {
+          'no-console': 0,
+          'prefer-const': 0,
+        },
+      },
+    }),
+    file('index.ts', `let test = 5; console.log(test)`),
+  ])
+
+  configurePackageJson()
+  configureTsconfig()
+
+  // Doesn't require lint configuration in package.json
+  const eslintResults = await lint()
+
+  const indexResults = getEslintResultsForFile('index.ts', eslintResults)
+
+  // No warning or errors for console statement and constant let variable.
+  expect(indexResults.errorCount).toEqual(0)
+  expect(indexResults.warningCount).toEqual(0)
 })

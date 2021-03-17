@@ -1,4 +1,4 @@
-import { exec, execSync } from 'child_process'
+import { spawn, execSync } from 'child_process'
 import { log } from '../helper'
 import { options } from '../options'
 import { build } from './build'
@@ -13,10 +13,11 @@ export const production = () => {
 
   log('Starting server...')
 
-  const child = exec(`node ${options().output}/index.js`, {
+  const child = spawn('node', [`${options().output}/index.js`], {
     cwd: process.cwd(),
+    detached: true,
   })
 
   // Close server manually for tests.
-  return () => process.kill(child.pid)
+  return () => child.kill()
 }

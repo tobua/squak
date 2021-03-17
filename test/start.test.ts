@@ -19,7 +19,7 @@ environment('start')
 afterEach(clearCache)
 
 // Increase async timeout.
-jest.setTimeout(20000)
+jest.setTimeout(50000)
 
 const expressApp = (port: number) => `import express from 'express'
 const app = express()
