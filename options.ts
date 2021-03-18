@@ -1,6 +1,6 @@
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
-import { sync as syncGlob } from 'fast-glob'
+import glob from 'fast-glob'
 import merge from 'deepmerge'
 import { cache, getProjectBasePath, log, removeDuplicatePaths } from './helper'
 import { Options } from './types'
@@ -57,7 +57,7 @@ export const options = cache(() => {
   // Unless overriden with boolean by user, we'll only look for tests in one folder.
   if (typeof result.test === 'string') {
     const hasTests =
-      syncGlob([`${result.test}/**.test.ts`], {
+      glob.sync([`${result.test}/**.test.ts`], {
         cwd: getProjectBasePath(),
       }).length > 0
     result.test = hasTests ? result.test : false
