@@ -1,7 +1,7 @@
 {
   "name": "squak",
   "description": "Setup and build modern Web Servers in TypeScript.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": "github:tobua/squak",
   "license": "MIT",
   "author": "Matthias Giger",

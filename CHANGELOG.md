@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/tobua/squak/compare/v0.1.0...v0.1.1) (2021-03-18)
+
+
+### Bug Fixes
+
+* **package:** publish as ES Module and add missing dependency ([20d18ee](https://github.com/tobua/squak/commit/20d18eeae790fc539dbaea49d20b58011330aa5b))
+
 ## 0.1.0 (2021-03-17)
 
 
