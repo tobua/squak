@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/tobua/squak/compare/v0.1.1...v0.1.2) (2021-03-18)
+
+
+### Bug Fixes
+
+* **import:** CJS module does not support named exports ([cf87301](https://github.com/tobua/squak/commit/cf87301685a377472fb92c577591924056cdad7b))
+
 ### [0.1.1](https://github.com/tobua/squak/compare/v0.1.0...v0.1.1) (2021-03-18)
 
 
