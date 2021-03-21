@@ -15,7 +15,6 @@ export const production = () => {
 
   const child = spawn('node', [`${options().output}/index.js`], {
     cwd: process.cwd(),
-    detached: true,
   })
 
   // Close server manually for tests.

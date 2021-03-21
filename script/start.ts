@@ -13,7 +13,6 @@ export const start = () => {
   const childTsc = spawn('tsc', ['--watch'], {
     stdio: 'inherit',
     cwd: process.cwd(),
-    detached: true,
   })
 
   const childNodemon = spawn(
@@ -22,7 +21,6 @@ export const start = () => {
     {
       stdio: 'inherit',
       cwd: process.cwd(),
-      detached: true,
     }
   )
 
