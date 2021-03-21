@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/tobua/squak/compare/v0.1.2...v0.1.3) (2021-03-21)
+
+
+### Bug Fixes
+
+* **start:** make sure watcher exists with main process ([a0fa0da](https://github.com/tobua/squak/commit/a0fa0da35e7909456f263f498df1b103919138f1))
+
 ### [0.1.2](https://github.com/tobua/squak/compare/v0.1.1...v0.1.2) (2021-03-18)
 
 
