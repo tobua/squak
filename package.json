@@ -6,7 +6,7 @@
   "license": "MIT",
   "author": "Matthias Giger",
   "scripts": {
-    "test": "padua test",
+    "test": "padua test --forceExit",
     "start": "padua watch",
     "build": "padua build",
     "postinstall": "skip-local-postinstall dist/installation.js"
