@@ -9,8 +9,8 @@ export const tsconfig = () => {
   // The local tsconfig in this package will be written and the user config is extending it.
   let packageTSConfig: any = {
     compilerOptions: {
-      target: 'ESNext',
-      module: 'ESNext',
+      target: 'esnext',
+      module: 'esnext',
       esModuleInterop: true,
       moduleResolution: 'node',
       skipLibCheck: true,
