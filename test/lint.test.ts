@@ -11,6 +11,8 @@ import { lint } from '../script/lint'
 import { clearCache } from '../helper'
 import { configurePackageJson, configureTsconfig } from '../configure'
 
+jest.setTimeout(50000)
+
 let packageContents = {}
 const initialCwd = process.cwd()
 
