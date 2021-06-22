@@ -54,7 +54,7 @@
     "!configuration/*.ts"
   ],
   "devDependencies": {
-    "jest-fixture": "^1.0.2",
+    "jest-fixture": "^2.0.0",
     "padua": "^0.3.7",
     "tcp-port-used": "^1.0.2"
   },

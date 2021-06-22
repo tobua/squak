@@ -78,7 +78,7 @@ test('Server starts, rebuilds and reboots on file change.', async () => {
   const contents = contentsForFilesMatching('*.js', dist)
 
   // File changes written to disk.
-  expect(contents[0].contents).toContain(newPort)
+  expect(contents[0].contents).toContain(String(newPort))
 
   // Close the server process.
   close()
