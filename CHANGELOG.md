@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/tobua/squak/compare/v0.1.5...v0.1.6) (2021-08-18)
+
+
+### Bug Fixes
+
+* **package:** update dependencies ([13fc085](https://github.com/tobua/squak/commit/13fc085a40342c7da2b27397ec756bdce50d4544))
+
 ### [0.1.5](https://github.com/tobua/squak/compare/v0.1.4...v0.1.5) (2021-06-22)
 
 ### [0.1.4](https://github.com/tobua/squak/compare/v0.1.3...v0.1.4) (2021-03-31)
