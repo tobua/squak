@@ -10,6 +10,7 @@ export const lint = async () => {
     `prettier --write '**/*.ts' --config ${configurationFolder}/.prettierrc.json --ignore-path ${configurationFolder}/.prettierignore`,
     { stdio: 'inherit', cwd: process.cwd() }
   )
+  // eslint-disable-next-line no-console
   console.log('')
 
   log('linting files...')

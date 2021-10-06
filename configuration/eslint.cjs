@@ -9,7 +9,7 @@ const customRules = {
 
 // Needs to be old CJS module.
 module.exports = {
-  extends: ['airbnb-typescript', 'prettier'],
+  extends: ['airbnb', 'airbnb-typescript', 'prettier'],
   rules: customRules,
   // TODO read from options().output
   ignorePatterns: ['dist'],

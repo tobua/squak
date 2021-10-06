@@ -79,6 +79,8 @@ test('Proper tsconfig.json with various configurations.', async () => {
   expect(indexContents).toContain('test = 5')
   // Semicolons between lines replaced with newline and space trimmed.
   expect(nestedContents).toContain('test = 5\nconsole')
+  // Not assigned let switched to const.
+  expect(testContents).toContain('const test')
   // Proper trim, semicolons removed.
   expect(testContents).toContain(
     `{\n  const test = 5\n  expect(5).toEqual(test)\n}`
