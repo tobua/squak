@@ -1,12 +1,7 @@
 import { options } from '../options'
 
 export const gitignore = () => {
-  const entries = [
-    'node_modules',
-    'package-lock.json',
-    'tsconfig.json',
-    options().output,
-  ]
+  const entries = ['node_modules', 'package-lock.json', 'tsconfig.json', options().output]
 
   const fromPackage = options().gitignore
 
