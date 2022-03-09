@@ -17,10 +17,7 @@ export const options = cache(() => {
   let packageContents: { squak?: Object }
 
   try {
-    const packageContentsFile = readFileSync(
-      join(getProjectBasePath(), 'package.json'),
-      'utf8'
-    )
+    const packageContentsFile = readFileSync(join(getProjectBasePath(), 'package.json'), 'utf8')
     packageContents = JSON.parse(packageContentsFile)
   } catch (error) {
     log('unable to load package.json', 'error')
@@ -41,9 +38,7 @@ export const options = cache(() => {
   result.entry = result.entry.concat(['index.ts', 'src/index.ts'])
 
   // Remove non-existing files.
-  result.entry = result.entry.filter((filePath) =>
-    existsSync(join(getProjectBasePath(), filePath))
-  )
+  result.entry = result.entry.filter((filePath) => existsSync(join(getProjectBasePath(), filePath)))
 
   if (result.entry.length === 0) {
     const entryFilePath = join(getProjectBasePath(), 'index.ts')

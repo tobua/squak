@@ -45,9 +45,7 @@ export const configurationPath = () => {
 export const removeDuplicatePaths = (relativePaths: string[]) => {
   // Checking the absolute paths for duplicates, so that './index.ts' and 'index.ts'
   // count as duplicates.
-  const absolutePaths = relativePaths.map((path) =>
-    join(getProjectBasePath(), path)
-  )
+  const absolutePaths = relativePaths.map((path) => join(getProjectBasePath(), path))
   const noDuplicatesSet = new Set()
 
   const indicesToRemove = []

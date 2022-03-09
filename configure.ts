@@ -1,10 +1,4 @@
-import {
-  accessSync,
-  existsSync,
-  constants,
-  readFileSync,
-  writeFileSync,
-} from 'fs'
+import { accessSync, existsSync, constants, readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import formatJson from 'pakag'
 import merge from 'deepmerge'
@@ -25,10 +19,7 @@ const writeUserAndPackageConfig = (
   packageTSConfigPath: string
 ) => {
   try {
-    writeFileSync(
-      packageTSConfigPath,
-      formatJson(JSON.stringify(packageConfig), { sort: false })
-    )
+    writeFileSync(packageTSConfigPath, formatJson(JSON.stringify(packageConfig), { sort: false }))
   } catch (_) {
     log(
       `Couldn't write ${packageTSConfigPath}, therefore this plugin might not work as expected`,
@@ -37,10 +28,7 @@ const writeUserAndPackageConfig = (
   }
 
   try {
-    writeFileSync(
-      userTSConfigPath,
-      formatJson(JSON.stringify(userConfig), { sort: false })
-    )
+    writeFileSync(userTSConfigPath, formatJson(JSON.stringify(userConfig), { sort: false }))
   } catch (_) {
     log(
       `Couldn't write ${userTSConfigPath}, therefore this plugin might not work as expected`,
@@ -68,10 +56,9 @@ const writeOnlyUserConfig = (userConfig, packageConfig, userTSConfigPath) => {
     adaptConfigToRoot(packageConfig)
     writeFileSync(
       userTSConfigPath,
-      formatJson(
-        JSON.stringify(merge(userConfig, packageConfig, { clone: false })),
-        { sort: false }
-      )
+      formatJson(JSON.stringify(merge(userConfig, packageConfig, { clone: false })), {
+        sort: false,
+      })
     )
   } catch (_) {
     log(
@@ -98,12 +85,7 @@ export const configureTsconfig = () => {
       constants.F_OK | constants.R_OK | constants.W_OK
     )
 
-    writeUserAndPackageConfig(
-      userConfig,
-      packageConfig,
-      userTSConfigPath,
-      packageTSConfigPath
-    )
+    writeUserAndPackageConfig(userConfig, packageConfig, userTSConfigPath, packageTSConfigPath)
   } catch (_) {
     // Package config cannot be written, write full contents to user file.
     writeOnlyUserConfig(userConfig, packageConfig, userTSConfigPath)
