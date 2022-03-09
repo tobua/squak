@@ -1,9 +1,5 @@
 import { prepare, environment, packageJson, file, readFile } from 'jest-fixture'
-import {
-  configurePackageJson,
-  configureGitignore,
-  configureTsconfig,
-} from '../configure'
+import { configurePackageJson, configureGitignore, configureTsconfig } from '../configure'
 import { clearCache } from '../helper'
 
 environment('configure')
@@ -32,9 +28,7 @@ test('Gitignore is created properly.', () => {
   const contents = readFile('.gitignore')
 
   expect(contents).toEqual(
-    ['node_modules', 'package-lock.json', 'tsconfig.json', 'dist', ''].join(
-      '\r\n'
-    )
+    ['node_modules', 'package-lock.json', 'tsconfig.json', 'dist', ''].join('\r\n')
   )
 })
 

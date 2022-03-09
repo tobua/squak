@@ -1,4 +1,4 @@
-import eslint from 'eslint'
+import { ESLint } from 'eslint'
 import { execSync } from 'child_process'
 import { log, configurationPath } from '../helper'
 
@@ -14,8 +14,6 @@ export const lint = async () => {
   console.log('')
 
   log('linting files...')
-  // CommonJS named exports not supported.
-  const { ESLint } = eslint
   const linter = new ESLint({
     fix: true,
     extensions: ['.ts'],

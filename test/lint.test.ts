@@ -1,12 +1,5 @@
 import { join } from 'path'
-import {
-  prepare,
-  environment,
-  packageJson,
-  file,
-  readFile,
-  writeFile,
-} from 'jest-fixture'
+import { prepare, environment, packageJson, file, readFile, writeFile } from 'jest-fixture'
 import { lint } from '../script/lint'
 import { clearCache } from '../helper'
 import { configurePackageJson, configureTsconfig } from '../configure'
@@ -36,10 +29,7 @@ environment('lint')
 
 afterEach(clearCache)
 
-const getEslintResultsForFile = (
-  fileName: string,
-  results: { filePath: string }[]
-) => {
+const getEslintResultsForFile = (fileName: string, results: { filePath: string }[]) => {
   let match = {}
 
   results.forEach((result) => {
@@ -54,10 +44,7 @@ const getEslintResultsForFile = (
 test('Proper tsconfig.json with various configurations.', async () => {
   prepare([
     packageJson('lint'),
-    file(
-      'index.ts',
-      `import 'nested/deep/hello-world'; let test  = 5; console.log(test);`
-    ),
+    file('index.ts', `import 'nested/deep/hello-world'; let test  = 5; console.log(test);`),
     file('nested/deep/hello-world.ts', 'let test = 5 ; console.log(test);'),
     file(
       'test/basic.test.ts',
@@ -82,19 +69,11 @@ test('Proper tsconfig.json with various configurations.', async () => {
   // Not assigned let switched to const.
   expect(testContents).toContain('const test')
   // Proper trim, semicolons removed.
-  expect(testContents).toContain(
-    `{\n  const test = 5\n  expect(5).toEqual(test)\n}`
-  )
+  expect(testContents).toContain(`{\n  const test = 5\n  expect(5).toEqual(test)\n}`)
 
   const indexResults = getEslintResultsForFile('index.ts', eslintResults)
-  const nestedResults = getEslintResultsForFile(
-    'nested/deep/hello-world.ts',
-    eslintResults
-  )
-  const testResults = getEslintResultsForFile(
-    'test/basic.test.ts',
-    eslintResults
-  )
+  const nestedResults = getEslintResultsForFile('nested/deep/hello-world.ts', eslintResults)
+  const testResults = getEslintResultsForFile('test/basic.test.ts', eslintResults)
 
   expect(indexResults.errorCount).toEqual(0)
   expect(indexResults.warningCount).toEqual(1)
@@ -137,10 +116,7 @@ test('eslintConfig property in package.json is applied.', async () => {
 test('Rules fixable by eslint are fixed in file.', async () => {
   // This is someshow required to run multiple lint tests in a single file.
   jest.resetModules()
-  prepare([
-    packageJson('eslint-fix'),
-    file('index.ts', `const test = !!!false; console.log(test)`),
-  ])
+  prepare([packageJson('eslint-fix'), file('index.ts', `const test = !!!false; console.log(test)`)])
 
   configurePackageJson()
   configureTsconfig()

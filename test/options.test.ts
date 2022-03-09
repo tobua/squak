@@ -1,10 +1,4 @@
-import {
-  prepare,
-  environment,
-  packageJson,
-  file,
-  listFilesMatching,
-} from 'jest-fixture'
+import { prepare, environment, packageJson, file, listFilesMatching } from 'jest-fixture'
 import { options } from '../options'
 import { clearCache } from '../helper'
 
@@ -13,10 +7,7 @@ const [fixturePath] = environment('options')
 afterEach(clearCache)
 
 test('Default options work fine.', () => {
-  prepare(
-    [packageJson('basic'), file('index.ts', "console.log('test')")],
-    fixturePath
-  )
+  prepare([packageJson('basic'), file('index.ts', "console.log('test')")], fixturePath)
 
   const result = options()
 
@@ -66,10 +57,7 @@ test('Non existing-entries will be removed.', () => {
 
 test('Entry from /src will be picked up.', () => {
   prepare(
-    [
-      packageJson('basic', { squak: { entry: ['gone.ts'] } }),
-      file('src/index.ts', ''),
-    ],
+    [packageJson('basic', { squak: { entry: ['gone.ts'] } }), file('src/index.ts', '')],
     fixturePath
   )
 

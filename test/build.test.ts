@@ -1,10 +1,4 @@
-import {
-  prepare,
-  environment,
-  packageJson,
-  file,
-  contentsForFilesMatching,
-} from 'jest-fixture'
+import { prepare, environment, packageJson, file, contentsForFilesMatching } from 'jest-fixture'
 import { configure } from '../configure'
 import { build } from '../script/build'
 import { clearCache } from '../helper'
@@ -14,10 +8,7 @@ environment('build')
 afterEach(clearCache)
 
 test('Basic build is generating proper file.', () => {
-  const { dist } = prepare([
-    packageJson('build'),
-    file('index.ts', "console.log('Hello')"),
-  ])
+  const { dist } = prepare([packageJson('build'), file('index.ts', "console.log('Hello')")])
 
   configure()
   build()
