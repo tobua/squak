@@ -13,6 +13,6 @@ export const test = () => {
 
   execSync(`jest ${additionalArguments.join(' ')}`, {
     stdio: 'inherit',
-    cwd: process.cwd(),
+    cwd: process.cwd()
   })
 }

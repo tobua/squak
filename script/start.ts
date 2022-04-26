@@ -19,11 +19,13 @@ export const start = () => {
   const childTsc = spawn('tsc', ['--watch'], {
     stdio: 'inherit',
     cwd: process.cwd(),
+    shell: true
   })
 
   const childNodemon = spawn('nodemon', ['-q', entryFile], {
     stdio: 'inherit',
     cwd: process.cwd(),
+    shell: true
   })
 
   // Close server manually for tests.

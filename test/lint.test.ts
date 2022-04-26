@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { join, sep } from 'path'
 import { prepare, environment, packageJson, file, readFile, writeFile } from 'jest-fixture'
 import { lint } from '../script/lint'
 import { clearCache } from '../helper'
@@ -33,7 +33,7 @@ const getEslintResultsForFile = (fileName: string, results: { filePath: string }
   let match = {}
 
   results.forEach((result) => {
-    if (new RegExp(`.*/${fileName}$`).test(result.filePath)) {
+    if (new RegExp(`.*${fileName}$`).test(result.filePath.split(sep).join('/'))) {
       match = result
     }
   })

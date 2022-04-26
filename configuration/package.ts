@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { join, sep } from 'path'
 import { options } from '../options'
 import { configurationPath } from '../helper'
 
@@ -17,7 +17,7 @@ export const packageJson = () => {
     type: 'module',
     prettier: 'squak/configuration/.prettierrc.json',
     eslintConfig: {
-      extends: join(configurationPath(), 'eslint.cjs'),
+      extends: join(configurationPath(), 'eslint.cjs').split(sep).join('/'),
     },
     engines: {
       node: '>= 14',
@@ -28,13 +28,8 @@ export const packageJson = () => {
     pkg.scripts.test = 'squak test'
     pkg.jest = {
       transform: {
-        '^.+\\.tsx?$': 'ts-jest',
-      },
-      globals: {
-        'ts-jest': {
-          tsconfig: './tsconfig.json',
-        },
-      },
+        '^.+\\.(j|t)sx?$': '@swc/jest',
+      }
     }
   }
 

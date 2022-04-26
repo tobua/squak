@@ -16,7 +16,7 @@ export const lint = async () => {
   log('linting files...')
   const linter = new ESLint({
     fix: true,
-    extensions: ['.ts'],
+    extensions: ['.ts']
   })
 
   const results = await linter.lintFiles('.')
