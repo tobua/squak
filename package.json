@@ -82,7 +82,6 @@
       "/test/fixture/",
       "/script/"
     ],
-    "resolver": "<rootDir>/test/jest-resolver.cjs",
     "transform": {
       "^.+\\.(t|j)sx?$": "@swc/jest"
     },
