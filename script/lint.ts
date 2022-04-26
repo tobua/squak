@@ -7,7 +7,7 @@ const configurationFolder = configurationPath()
 export const lint = async () => {
   log('formatting files...')
   execSync(
-    `prettier --write '**/*.ts' --config ${configurationFolder}/.prettierrc.json --ignore-path ${configurationFolder}/.prettierignore`,
+    `prettier --write "**/*.ts" --config "${configurationFolder}/.prettierrc.json" --ignore-path "${configurationFolder}/.prettierignore"`,
     { stdio: 'inherit', cwd: process.cwd() }
   )
   // eslint-disable-next-line no-console
