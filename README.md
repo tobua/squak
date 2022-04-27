@@ -24,9 +24,9 @@ This will automatically adapt your `package.json` and create the necessary confi
 
 ```js
 // Bootstrap the default template in the current directory.
-npm init now squak
+npm init --yes now squak
 // Additional options:
-npm init now squak [./my-web-server] [template = 'default' | 'empty' | 'full' | 'graphql']
+npm init --yes now squak [./my-web-server] [template = 'default' | 'empty' | 'full' | 'graphql']
 ```
 
 The default template includes a basic [`express`](http://npmjs.com/express) server. Here are the [templates](https://github.com/tobua/squak/tree/main/template).
