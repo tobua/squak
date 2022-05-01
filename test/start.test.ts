@@ -10,6 +10,7 @@ import {
   writeFile,
   contentsForFilesMatching,
 } from 'jest-fixture'
+import getPort from 'get-port'
 import { configure } from '../configure'
 import { start } from '../script/start'
 import { clearCache } from '../helper'
@@ -27,7 +28,7 @@ app.get('/', (_request, response) => response.send('Hello World!'))
 app.listen(${port}, () => console.log('running'))`
 
 test('Server starts, rebuilds and reboots on file change.', async () => {
-  const port = 5823
+  const port = await getPort({ port: 5000 })
   const { dist } = prepare([
     packageJson('start', {
       dependencies: {
@@ -48,19 +49,19 @@ test('Server starts, rebuilds and reboots on file change.', async () => {
   // Port is free before starting server.
   expect(await tcpPortUsed.check(port)).toEqual(false)
 
-  const close = start()
+  const close = await start()
 
   const distFiles = listFilesMatching('*.js', dist)
 
   expect(distFiles.length).toEqual(1)
 
   // Wait 3 seconds for the watcher and server to start.
-  await wait(3)
+  await wait(5)
 
   // Port is used by server.
   expect(await tcpPortUsed.check(port)).toEqual(true)
 
-  const newPort = 5834
+  const newPort = port + 1
 
   // Port is free before restarting server.
   expect(await tcpPortUsed.check(newPort)).toEqual(false)
@@ -68,7 +69,7 @@ test('Server starts, rebuilds and reboots on file change.', async () => {
   writeFile('index.ts', expressApp(newPort))
 
   // Wait for watcher to pick up the change, rebuild and restart the server.
-  await wait(6)
+  await wait(10)
 
   // Port is used by server.
   expect(await tcpPortUsed.check(newPort)).toEqual(true)

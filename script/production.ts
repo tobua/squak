@@ -5,7 +5,7 @@ import { build } from './build'
 
 export const production = () => {
   // Regular build.
-  build()
+  build(false)
 
   log('Pruning devDependencies...')
 
@@ -15,7 +15,7 @@ export const production = () => {
 
   const child = spawn('node', [`${options().output}/index.js`], {
     cwd: process.cwd(),
-    shell: true
+    shell: true,
   })
 
   // Close server manually for tests.

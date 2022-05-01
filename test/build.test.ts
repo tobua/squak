@@ -7,11 +7,11 @@ environment('build')
 
 afterEach(clearCache)
 
-test('Basic build is generating proper file.', () => {
+test('Basic build is generating proper file.', async () => {
   const { dist } = prepare([packageJson('build'), file('index.ts', "console.log('Hello')")])
 
   configure()
-  build()
+  await build()
 
   const contents = contentsForFilesMatching('*', dist)
 
@@ -21,14 +21,14 @@ test('Basic build is generating proper file.', () => {
   expect(contents[0].contents).not.toContain('sourceMappingURL')
 })
 
-test('Type annotations are removed.', () => {
+test('Type annotations are removed.', async () => {
   const { dist } = prepare([
     packageJson('annotations'),
     file('index.ts', 'const count: number = 5; console.log(count)'),
   ])
 
   configure()
-  build()
+  await build()
 
   const contents = contentsForFilesMatching('*', dist)
 
@@ -36,7 +36,7 @@ test('Type annotations are removed.', () => {
   expect(contents[0].contents).not.toContain('number')
 })
 
-test("Named and default imports work but aren't bundled.", () => {
+test("Result is bundled as tsc doesn't produce valid ESM.", async () => {
   const { dist } = prepare([
     packageJson('build'),
     file(
@@ -48,12 +48,11 @@ test("Named and default imports work but aren't bundled.", () => {
   ])
 
   configure()
-  build()
+  await build()
 
   const contents = contentsForFilesMatching('*', dist)
 
-  expect(contents.length).toEqual(3)
-  // No bundling happens, as size is not a concern.
-  expect(contents[1].name).toEqual('index.js')
-  expect(contents[1].contents).toContain('import')
+  expect(contents.length).toEqual(1)
+  expect(contents[0].name).toEqual('index.js')
+  expect(contents[0].contents).toContain('named = 5')
 })
