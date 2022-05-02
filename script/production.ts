@@ -15,6 +15,7 @@ export const production = () => {
 
   const child = spawn('node', [`${options().output}/index.js`], {
     cwd: process.cwd(),
+    stdio: 'inherit',
     shell: true,
   })
 

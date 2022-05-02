@@ -2,11 +2,14 @@ import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
 import { buildSchema } from 'graphql'
 
-const schema = buildSchema`
+// Also consider using the more popular apollo-server-express package.
+// https://www.apollographql.com/docs/apollo-server/integrations/middleware#apollo-server-express
+
+const schema = buildSchema(`
   type Query {
     greeting: String
   }
-`
+`)
 
 // Resolver methods for endpoints.
 const root = {

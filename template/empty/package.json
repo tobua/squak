@@ -1,5 +1,5 @@
 {
-  "devDependencies": {
-    "squak": "^1.0.0"
+  "dependencies": {
+    "squak": "^2.0.0"
   }
 }
