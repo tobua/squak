@@ -1,5 +1,6 @@
 {
+  "name": "squak-empty",
   "dependencies": {
-    "squak": "^2.0.0"
+    "squak": "^3.0.0"
   }
 }
