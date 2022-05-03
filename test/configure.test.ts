@@ -30,7 +30,7 @@ test('Package.json is created properly.', () => {
   expect(contents.engines.node).toEqual('>= 14')
   expect(contents.scripts.test).not.toBeDefined()
   expect(contents.jest).not.toBeDefined()
-  expect(contents.prettier).toEqual(`squak/${hash}/.prettierrc.json`)
+  expect(contents.prettier).toEqual(`./node_modules/squak/${hash}/.prettierrc.json`)
   expect(contents.eslintConfig.extends).toEqual(`./node_modules/squak/${hash}/.eslintrc.json`)
 })
 
