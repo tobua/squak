@@ -1,4 +1,6 @@
-const { join } = require('path')
+import { join } from 'path'
+import { options } from '../options'
+import { getProjectBasePath } from '../helper'
 
 const customRules = {
   // Use named exports to make it easier to find usages.
@@ -7,18 +9,17 @@ const customRules = {
   'no-param-reassign': [2, { props: false }],
 }
 
-// Needs to be old CJS module.
-module.exports = {
-  extends: ['airbnb', 'airbnb-typescript', 'prettier'],
+export const eslint = () => ({
+  // base as we don't need React on the server.
+  extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier'],
   rules: customRules,
-  // TODO read from options().output
-  ignorePatterns: ['dist'],
+  ignorePatterns: [options().output],
   env: {
     node: true,
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: join(process.cwd(), 'tsconfig.json'),
+    project: join(getProjectBasePath(), 'tsconfig.json'),
   },
   overrides: [
     {
@@ -29,4 +30,4 @@ module.exports = {
       },
     },
   ],
-}
+})

@@ -1,11 +1,13 @@
 import { join, sep } from 'path'
 import { options } from '../options'
-import { configurationPath } from '../helper'
+import { hashPath } from '../helper'
 
 // Old package properties users might have that should be deleted or updated.
 export const packagePropertiesToUpdate = [
   // Keep node version up-to-date.
   'engines',
+  'prettier',
+  'eslintConfig.extends',
 ]
 
 export const packageJson = () => {
@@ -15,9 +17,9 @@ export const packageJson = () => {
       production: 'squak production',
     },
     type: 'module',
-    prettier: 'squak/configuration/.prettierrc.json',
+    prettier: `.${sep}${join(hashPath(options), '.prettierrc.json')}`,
     eslintConfig: {
-      extends: join(configurationPath(), 'eslint.cjs').split(sep).join('/'),
+      extends: `.${sep}${join(hashPath(options), '.eslintrc.json')}`,
     },
     engines: {
       node: '>= 14',
@@ -29,7 +31,7 @@ export const packageJson = () => {
     pkg.jest = {
       transform: {
         '^.+\\.(j|t)sx?$': '@swc/jest',
-      }
+      },
     }
   }
 

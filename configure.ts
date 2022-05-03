@@ -1,4 +1,5 @@
-import { accessSync, existsSync, constants, readFileSync, writeFileSync } from 'fs'
+import { accessSync, existsSync, constants, readFileSync, writeFileSync, mkdirSync } from 'fs'
+import { EOL } from 'os'
 import { join } from 'path'
 import formatJson from 'pakag'
 import merge from 'deepmerge'
@@ -6,11 +7,60 @@ import parse from 'parse-gitignore'
 import unset from 'lodash.unset'
 import deepForEach from 'deep-for-each'
 import isCI from 'is-ci'
-import { getProjectBasePath, log } from './helper'
+import { getProjectBasePath, log, hashPath } from './helper'
 import { options } from './options'
 import { gitignore } from './configuration/gitignore'
 import { packageJson, packagePropertiesToUpdate } from './configuration/package'
 import { tsconfig } from './configuration/typescript'
+import { eslint } from './configuration/eslint'
+import { prettier, prettierIgnore } from './configuration/prettier'
+
+export const ensureHashDirectory = () => {
+  const hashDirectoryPath = join(getProjectBasePath(), hashPath(options))
+
+  if (!existsSync(hashDirectoryPath)) {
+    mkdirSync(hashDirectoryPath, { recursive: true })
+  }
+}
+
+export const configurePrettier = () => {
+  // Only ignore file is dynamic, but both are generated as the ignore file has to be in the same folder.
+  const prettierConfigPath = join(getProjectBasePath(), hashPath(options), `.prettierrc.json`)
+  const prettierignorePath = join(getProjectBasePath(), hashPath(options), `.prettierignore`)
+
+  try {
+    ensureHashDirectory()
+    writeFileSync(prettierConfigPath, formatJson(JSON.stringify(prettier()), { sort: false }))
+  } catch (_) {
+    log(
+      `Couldn't write ${prettierConfigPath}, therefore this plugin might not work as expected`,
+      'warning'
+    )
+  }
+
+  try {
+    writeFileSync(prettierignorePath, prettierIgnore().join(EOL))
+  } catch (_) {
+    log(
+      `Couldn't write ${prettierignorePath}, therefore this plugin might not work as expected`,
+      'warning'
+    )
+  }
+}
+
+export const configureEslint = () => {
+  const eslintConfigPath = join(getProjectBasePath(), hashPath(options), `.eslintrc.json`)
+
+  try {
+    ensureHashDirectory()
+    writeFileSync(eslintConfigPath, formatJson(JSON.stringify(eslint()), { sort: false }))
+  } catch (_) {
+    log(
+      `Couldn't write ${eslintConfigPath}, therefore this plugin might not work as expected`,
+      'warning'
+    )
+  }
+}
 
 const writeUserAndPackageConfig = (
   userConfig: {},
@@ -19,6 +69,7 @@ const writeUserAndPackageConfig = (
   packageTSConfigPath: string
 ) => {
   try {
+    ensureHashDirectory()
     writeFileSync(packageTSConfigPath, formatJson(JSON.stringify(packageConfig), { sort: false }))
   } catch (_) {
     log(
@@ -70,10 +121,7 @@ const writeOnlyUserConfig = (userConfig, packageConfig, userTSConfigPath) => {
 
 export const configureTsconfig = () => {
   const userTSConfigPath = join(getProjectBasePath(), 'tsconfig.json')
-  const packageTSConfigPath = join(
-    getProjectBasePath(),
-    `./node_modules/squak/configuration/tsconfig.json`
-  )
+  const packageTSConfigPath = join(getProjectBasePath(), hashPath(options), `tsconfig.json`)
 
   const [userConfig, packageConfig] = tsconfig()
 
@@ -142,4 +190,6 @@ export const configure = () => {
   configurePackageJson()
   configureGitignore()
   configureTsconfig()
+  configureEslint()
+  configurePrettier()
 }

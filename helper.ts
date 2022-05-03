@@ -1,5 +1,6 @@
 import { join } from 'path'
 import { create } from 'logua'
+import { Options } from './types'
 
 export const log = create('squak', 'red')
 
@@ -10,16 +11,16 @@ const results = new Map()
 // isn't expected to change until refresh is called.
 export const cache =
   <T>(method: () => T) =>
-    () => {
-      if (results.has(method)) {
-        return results.get(method)
-      }
-      const result = method()
-
-      results.set(method, result)
-
-      return result
+  () => {
+    if (results.has(method)) {
+      return results.get(method)
     }
+    const result = method()
+
+    results.set(method, result)
+
+    return result
+  }
 
 export const clearCache = () => results.clear()
 
@@ -27,20 +28,17 @@ export const getProjectBasePath = () => {
   // CWD during postinstall is in package, otherwise in project.
   const currentWorkingDirectory = process.cwd()
 
-  if (currentWorkingDirectory.includes('node_modules/squak') || currentWorkingDirectory.includes('node_modules\\squak')) {
+  if (
+    currentWorkingDirectory.includes('node_modules/squak') ||
+    currentWorkingDirectory.includes('node_modules\\squak')
+  ) {
     return join(currentWorkingDirectory, '../..')
   }
 
   return currentWorkingDirectory
 }
 
-export const configurationPath = () => {
-  if (typeof jest !== 'undefined') {
-    return './../../../configuration'
-  }
-
-  return './node_modules/squak/configuration'
-}
+export const hashPath = (options: () => Options) => join('node_modules', 'squak', options().hash)
 
 export const removeDuplicatePaths = (relativePaths: string[]) => {
   // Checking the absolute paths for duplicates, so that './index.ts' and 'index.ts'

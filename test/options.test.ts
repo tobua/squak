@@ -1,4 +1,5 @@
 import { prepare, environment, packageJson, file, listFilesMatching } from 'jest-fixture'
+import { createHash } from 'node:crypto'
 import { options } from '../options'
 import { clearCache } from '../helper'
 
@@ -80,4 +81,16 @@ test('Duplicate paths that are absolutely equal will be removed.', () => {
   const result = options()
 
   expect(result.entry).toEqual(['hello.ts'])
+})
+
+const hashFromName = (name: string) => createHash('md5').update(name).digest('hex').substring(0, 3)
+
+test('Hash generated from package name.', () => {
+  prepare([packageJson('generate-hash')], fixturePath)
+
+  const hash = hashFromName('generate-hash')
+
+  const result = options()
+
+  expect(result.hash).toEqual(hash)
 })

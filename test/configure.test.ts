@@ -1,6 +1,15 @@
 import { prepare, environment, packageJson, file, readFile } from 'jest-fixture'
-import { configurePackageJson, configureGitignore, configureTsconfig } from '../configure'
+import { createHash } from 'node:crypto'
+import {
+  configurePackageJson,
+  configureGitignore,
+  configureTsconfig,
+  configureEslint,
+  configurePrettier,
+} from '../configure'
 import { clearCache } from '../helper'
+
+const hashFromName = (name: string) => createHash('md5').update(name).digest('hex').substring(0, 3)
 
 environment('configure')
 
@@ -13,15 +22,20 @@ test('Package.json is created properly.', () => {
 
   const contents = readFile('package.json')
 
+  // Generated configuration files placed in hashed folder.
+  const hash = hashFromName('basic')
+
   expect(Object.keys(contents.scripts).length).toBeGreaterThanOrEqual(1)
   expect(contents.type).toEqual('module')
   expect(contents.engines.node).toEqual('>= 14')
   expect(contents.scripts.test).not.toBeDefined()
   expect(contents.jest).not.toBeDefined()
+  expect(contents.prettier).toEqual(`squak/${hash}/.prettierrc.json`)
+  expect(contents.eslintConfig.extends).toEqual(`./node_modules/squak/${hash}/.eslintrc.json`)
 })
 
 test('Gitignore is created properly.', () => {
-  prepare([packageJson('basic'), file('index.ts', '')])
+  prepare([packageJson('gitignore'), file('index.ts', '')])
 
   configureGitignore()
 
@@ -103,4 +117,34 @@ test('Proper tsconfig.json with various configurations.', () => {
   expect(contents.include).toContain('spec')
   expect(contents.compilerOptions.moduleResolution).toEqual('classic')
   expect(contents.include).toContain('./global.d.ts')
+})
+
+test('ESLint configuration is created.', () => {
+  prepare([packageJson('eslint'), file('index.ts', '')])
+
+  configureEslint()
+
+  const hash = hashFromName('eslint')
+
+  const contents = readFile(`node_modules/squak/${hash}/.eslintrc.json`)
+
+  expect(contents).toBeDefined()
+  expect(contents.extends).toContain('airbnb-base')
+  expect(contents.ignorePatterns).toContain('dist')
+})
+
+test('Prettier configuration is created.', () => {
+  prepare([packageJson('prettier'), file('index.ts', '')])
+
+  configurePrettier()
+
+  const hash = hashFromName('prettier')
+
+  const contentsConfig = readFile(`node_modules/squak/${hash}/.prettierrc.json`)
+  const contentsIgnore = readFile(`node_modules/squak/${hash}/.prettierignore`)
+
+  expect(contentsConfig).toBeDefined()
+  expect(contentsIgnore).toBeDefined()
+  expect(contentsConfig.singleQuote).toBe(true)
+  expect(contentsIgnore).toContain('dist')
 })

@@ -1,11 +1,11 @@
 import { ESLint } from 'eslint'
 import { execSync } from 'child_process'
-import { log, configurationPath } from '../helper'
-
-const configurationFolder = configurationPath()
+import { options } from '../options'
+import { log, hashPath } from '../helper'
 
 export const lint = async () => {
   log('formatting files...')
+  const configurationFolder = hashPath(options)
   execSync(
     `prettier --write "**/*.ts" --config "${configurationFolder}/.prettierrc.json" --ignore-path "${configurationFolder}/.prettierignore"`,
     { stdio: 'inherit', cwd: process.cwd() }
@@ -16,7 +16,7 @@ export const lint = async () => {
   log('linting files...')
   const linter = new ESLint({
     fix: true,
-    extensions: ['.ts']
+    extensions: ['.ts'],
   })
 
   const results = await linter.lintFiles('.')

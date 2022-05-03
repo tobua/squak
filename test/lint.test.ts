@@ -2,7 +2,7 @@ import { join, sep } from 'path'
 import { prepare, environment, packageJson, file, readFile, writeFile } from 'jest-fixture'
 import { lint } from '../script/lint'
 import { clearCache } from '../helper'
-import { configurePackageJson, configureTsconfig } from '../configure'
+import { configure } from '../configure'
 
 jest.setTimeout(50000)
 
@@ -52,8 +52,7 @@ test('Proper tsconfig.json with various configurations.', async () => {
     ),
   ])
 
-  configurePackageJson()
-  configureTsconfig()
+  configure()
 
   // Doesn't require lint configuration in package.json
   const eslintResults = await lint()
@@ -100,8 +99,7 @@ test('eslintConfig property in package.json is applied.', async () => {
     file('index.ts', `let test = 5; console.log(test)`),
   ])
 
-  configurePackageJson()
-  configureTsconfig()
+  configure()
 
   // Doesn't require lint configuration in package.json
   const eslintResults = await lint()
@@ -118,8 +116,7 @@ test('Rules fixable by eslint are fixed in file.', async () => {
   jest.resetModules()
   prepare([packageJson('eslint-fix'), file('index.ts', `const test = !!!false; console.log(test)`)])
 
-  configurePackageJson()
-  configureTsconfig()
+  configure()
 
   // Doesn't require lint configuration in package.json
   const eslintResults = await lint()

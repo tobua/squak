@@ -2,25 +2,31 @@ import { existsSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
 import glob from 'fast-glob'
 import merge from 'deepmerge'
+import { createHash } from 'node:crypto'
 import { cache, getProjectBasePath, log, removeDuplicatePaths } from './helper'
-import { Options } from './types'
+import { Options, Package } from './types'
 
 // Default options.
-const defaultOptions = (pkg: Object) => ({
+const defaultOptions = (pkg: Package) => ({
   entry: [],
   output: 'dist',
   test: 'test',
+  hash: createHash('md5').update(pkg.name).digest('hex').substring(0, 3),
   pkg,
 })
 
-export const options = cache(() => {
-  let packageContents: { squak?: Object }
+export const options: () => Options = cache(() => {
+  let packageContents: Package
 
   try {
     const packageContentsFile = readFileSync(join(getProjectBasePath(), 'package.json'), 'utf8')
     packageContents = JSON.parse(packageContentsFile)
   } catch (error) {
     log('unable to load package.json', 'error')
+  }
+
+  if (typeof packageContents.name !== 'string') {
+    log('Missing "name" field in package.json', 'error')
   }
 
   let result: Options = defaultOptions(packageContents)

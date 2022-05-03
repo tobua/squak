@@ -3,7 +3,7 @@ import { options } from '../options'
 
 export const tsconfig = () => {
   const userTSConfig = {
-    extends: 'squak/configuration/tsconfig',
+    extends: `squak/${options().hash}/tsconfig`,
   }
 
   // The local tsconfig in this package will be written and the user config is extending it.
