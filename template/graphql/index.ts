@@ -17,6 +17,7 @@ const root = {
 }
 
 const app = express()
+const port = process.env.PORT || 3000
 
 app.use(
   '/graphql',
@@ -28,4 +29,4 @@ app.use(
   })
 )
 
-app.listen(3000, () => console.log(`Running on http://localhost:3000/graphql`))
+app.listen(port, () => console.log(`Running on http://localhost:${port}/graphql`))
