@@ -22,7 +22,7 @@ export const options: () => Options = cache(() => {
     const packageContentsFile = readFileSync(join(getProjectBasePath(), 'package.json'), 'utf8')
     packageContents = JSON.parse(packageContentsFile)
   } catch (error) {
-    log('unable to load package.json', 'error')
+    log('Unable to load package.json', 'error')
   }
 
   if (typeof packageContents.name !== 'string') {

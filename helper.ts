@@ -28,6 +28,11 @@ export const getProjectBasePath = () => {
   // CWD during postinstall is in package, otherwise in project.
   const currentWorkingDirectory = process.cwd()
 
+  // Required for pnpm as modules are nested deeper.
+  if (currentWorkingDirectory.includes('node_modules') && process.env.INIT_CWD) {
+    return process.env.INIT_CWD
+  }
+
   if (
     currentWorkingDirectory.includes('node_modules/squak') ||
     currentWorkingDirectory.includes('node_modules\\squak')
