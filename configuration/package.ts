@@ -12,10 +12,7 @@ export const packagePropertiesToUpdate = [
 
 export const packageJson = () => {
   const pkg: any = {
-    scripts: {
-      start: 'squak start',
-      production: 'squak production',
-    },
+    scripts: options().pkg.scripts,
     type: 'module',
     prettier: `.${sep}${join(hashPath(options), '.prettierrc.json')}`,
     eslintConfig: {
@@ -24,6 +21,13 @@ export const packageJson = () => {
     engines: {
       node: '>= 14',
     },
+  }
+
+  if (!options().pkg.scripts) {
+    pkg.scripts = {
+      start: 'squak start',
+      production: 'squak production',
+    }
   }
 
   if (options().test) {
