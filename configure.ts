@@ -145,7 +145,7 @@ export const configureGitignore = () => {
   let entries: string[] = []
 
   if (existsSync(gitIgnorePath)) {
-    entries = entries.concat(parse(readFileSync(gitIgnorePath, 'utf8')))
+    entries = entries.concat(parse(readFileSync(gitIgnorePath, 'utf8')).patterns)
   }
 
   entries = entries.concat(gitignore())
