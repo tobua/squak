@@ -53,6 +53,8 @@ test('Server starts, rebuilds and reboots on file change.', async () => {
 
   const close = await start()
 
+  await wait(1)
+
   const distFiles = listFilesMatching('*.js', dist)
 
   expect(distFiles.length).toEqual(1)

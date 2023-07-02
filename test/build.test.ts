@@ -75,6 +75,8 @@ test('Build can watch for changes.', async () => {
   configure()
   await build(true)
 
+  await wait(1)
+
   let contents = contentsForFilesMatching('*', dist)
 
   expect(contents.length).toEqual(1)
