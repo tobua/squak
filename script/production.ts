@@ -3,9 +3,9 @@ import { log } from '../helper'
 import { options } from '../options'
 import { build } from './build'
 
-export const production = () => {
+export const production = async () => {
   // Regular build.
-  build(false)
+  await build(false)
 
   log('Pruning devDependencies...')
 

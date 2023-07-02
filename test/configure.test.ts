@@ -1,4 +1,5 @@
-import { prepare, environment, packageJson, file, readFile } from 'jest-fixture'
+import { test, expect, beforeEach, afterEach, vi } from 'vitest'
+import { registerVitest, prepare, environment, packageJson, file, readFile } from 'jest-fixture'
 import { createHash } from 'node:crypto'
 import {
   configurePackageJson,
@@ -8,6 +9,8 @@ import {
   configurePrettier,
 } from '../configure'
 import { clearCache } from '../helper'
+
+registerVitest(beforeEach, afterEach, vi)
 
 const hashFromName = (name: string) => createHash('md5').update(name).digest('hex').substring(0, 3)
 

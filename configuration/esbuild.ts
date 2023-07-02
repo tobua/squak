@@ -1,8 +1,8 @@
 import merge from 'deepmerge'
-import { BuildOptions, WatchMode } from 'esbuild'
+import { BuildOptions } from 'esbuild'
 import { options } from '../options'
 
-export const esbuildConfiguration = (watch: boolean | WatchMode) => {
+export const esbuildConfiguration = () => {
   // dependencies and peerDependencies are installed and better bundled by user to avoid duplication.
   // Use devDependencies to ensure dependency results in distributed bundle.
   const userDependencies = []
@@ -23,7 +23,6 @@ export const esbuildConfiguration = (watch: boolean | WatchMode) => {
     target: 'node14',
     platform: 'node',
     format: 'esm',
-    watch,
     tsconfig: 'tsconfig.json',
   }
 

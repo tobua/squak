@@ -2,13 +2,21 @@ import { existsSync } from 'fs'
 import { join } from 'path'
 import { execSync } from 'child_process'
 import tcpPortUsed from 'tcp-port-used'
-import { prepare, environment, packageJson, file, wait, listFilesMatching } from 'jest-fixture'
+import { test, expect, beforeEach, afterEach, vi } from 'vitest'
+import {
+  registerVitest,
+  prepare,
+  environment,
+  packageJson,
+  file,
+  wait,
+  listFilesMatching,
+} from 'jest-fixture'
 import { configure } from '../configure'
 import { production } from '../script/production'
 import { clearCache } from '../helper'
 
-// Increase timeout to 50 seconds when running in parallel with other tests.
-jest.setTimeout(50000)
+registerVitest(beforeEach, afterEach, vi)
 
 environment('production')
 
@@ -44,7 +52,7 @@ test('DevDependencies are pruned after build and server is running.', async () =
   // Port is free before starting server.
   expect(await tcpPortUsed.check(port)).toEqual(false)
 
-  const close = production()
+  const close = await production()
 
   const distFiles = listFilesMatching('*.js', dist)
 
@@ -61,4 +69,4 @@ test('DevDependencies are pruned after build and server is running.', async () =
 
   // Close the server process.
   close()
-})
+}, 10000)

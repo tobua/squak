@@ -1,7 +1,17 @@
-import { prepare, environment, packageJson, file, listFilesMatching } from 'jest-fixture'
+import { test, expect, beforeEach, afterEach, vi } from 'vitest'
+import {
+  registerVitest,
+  prepare,
+  environment,
+  packageJson,
+  file,
+  listFilesMatching,
+} from 'jest-fixture'
 import { createHash } from 'node:crypto'
 import { options } from '../options'
 import { clearCache } from '../helper'
+
+registerVitest(beforeEach, afterEach, vi)
 
 const [fixturePath] = environment('options')
 

@@ -1,34 +1,51 @@
+import { existsSync, rmSync } from 'fs'
 import { join } from 'path'
 import { execSync } from 'child_process'
-import rimraf from 'rimraf'
-import { build as esbuild, WatchMode } from 'esbuild'
+import esbuild, { BuildContext } from 'esbuild'
 import { options } from '../options'
 import { log } from '../helper'
 import { esbuildConfiguration } from '../configuration/esbuild'
 
-const javaScriptBuild = (watch: boolean | WatchMode) => {
-  if (watch) {
-    // eslint-disable-next-line no-param-reassign
-    watch = {
-      onRebuild: (error) => {
-        // Error is ignored as it's already printed to the console.
-        if (!error) {
+const javaScriptBuild = async (watch: boolean) => {
+  let firstBuild = true
+
+  const onWatchPlugin = {
+    name: 'on-watch-plugin',
+    setup(build) {
+      build.onStart(() => {
+        if (!firstBuild) {
           console.log('')
           log('rebuilding...')
+        } else {
+          firstBuild = false
         }
-      },
-    }
+      })
+    },
   }
 
-  const buildOptions = esbuildConfiguration(watch)
+  const buildOptions = esbuildConfiguration()
+
+  let context: BuildContext
 
   // Will print errors and warnings to the console.
   try {
-    return esbuild(buildOptions)
+    context = await esbuild.context({ ...buildOptions, plugins: [onWatchPlugin] })
+    // First build has to be triggered manually.
+    await context.rebuild()
   } catch (error) {
     // Won't keep watching if initial build fails.
-    return process.exit(1)
+    process.exit(1)
   }
+
+  if (watch) {
+    await context.watch()
+  }
+
+  if (!watch) {
+    await context.dispose()
+  }
+
+  return () => context.dispose()
 }
 
 export const build = (watch = false) => {
@@ -40,8 +57,12 @@ export const build = (watch = false) => {
 
   log(watch ? 'watching...' : 'building...')
 
+  const outputDirectory = join(process.cwd(), options().output)
+
   if (!watch) {
-    rimraf.sync(join(process.cwd(), options().output))
+    if (existsSync(outputDirectory)) {
+      rmSync(outputDirectory, { recursive: true })
+    }
   }
 
   return javaScriptBuild(watch)

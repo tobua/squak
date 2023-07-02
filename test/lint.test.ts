@@ -1,10 +1,19 @@
 import { join, sep } from 'path'
-import { prepare, environment, packageJson, file, readFile, writeFile } from 'jest-fixture'
+import { test, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from 'vitest'
+import {
+  registerVitest,
+  prepare,
+  environment,
+  packageJson,
+  file,
+  readFile,
+  writeFile,
+} from 'jest-fixture'
 import { lint } from '../script/lint'
 import { clearCache } from '../helper'
 import { configure } from '../configure'
 
-jest.setTimeout(50000)
+registerVitest(beforeEach, afterEach, vi)
 
 let packageContents = {}
 const initialCwd = process.cwd()
@@ -86,7 +95,7 @@ test('Proper tsconfig.json with various configurations.', async () => {
 
 test('eslintConfig property in package.json is applied.', async () => {
   // This is someshow required to run multiple lint tests in a single file.
-  jest.resetModules()
+  vi.resetModules()
   prepare([
     packageJson('configuring-eslint', {
       eslintConfig: {
@@ -113,7 +122,7 @@ test('eslintConfig property in package.json is applied.', async () => {
 
 test('Rules fixable by eslint are fixed in file.', async () => {
   // This is someshow required to run multiple lint tests in a single file.
-  jest.resetModules()
+  vi.resetModules()
   prepare([packageJson('eslint-fix'), file('index.ts', `const test = !!!false; console.log(test)`)])
 
   configure()

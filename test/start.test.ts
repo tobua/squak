@@ -1,6 +1,8 @@
 import { execSync } from 'child_process'
 import tcpPortUsed from 'tcp-port-used'
+import { test, expect, beforeEach, afterEach, vi } from 'vitest'
 import {
+  registerVitest,
   prepare,
   environment,
   packageJson,
@@ -9,18 +11,18 @@ import {
   listFilesMatching,
   writeFile,
   contentsForFilesMatching,
+  readFile,
 } from 'jest-fixture'
 import getPort from 'get-port'
 import { configure } from '../configure'
 import { start } from '../script/start'
 import { clearCache } from '../helper'
 
+registerVitest(beforeEach, afterEach, vi)
+
 environment('start')
 
 afterEach(clearCache)
-
-// Increase async timeout.
-jest.setTimeout(50000)
 
 const expressApp = (port: number) => `import express from 'express'
 const app = express()
@@ -55,7 +57,7 @@ test('Server starts, rebuilds and reboots on file change.', async () => {
 
   expect(distFiles.length).toEqual(1)
 
-  // Wait 3 seconds for the watcher and server to start.
+  // Wait 5 seconds for the watcher and server to start.
   await wait(5)
 
   // Port is used by server.
@@ -82,5 +84,5 @@ test('Server starts, rebuilds and reboots on file change.', async () => {
   expect(contents[0].contents).toContain(String(newPort))
 
   // Close the server process.
-  close()
-})
+  await close()
+}, 30000)
