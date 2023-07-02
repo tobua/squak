@@ -14,7 +14,6 @@ const javaScriptBuild = async (watch: boolean) => {
     setup(build) {
       build.onStart(() => {
         if (!firstBuild) {
-          console.log('')
           log('rebuilding...')
         } else {
           firstBuild = false
@@ -30,8 +29,9 @@ const javaScriptBuild = async (watch: boolean) => {
   // Will print errors and warnings to the console.
   try {
     context = await esbuild.context({ ...buildOptions, plugins: [onWatchPlugin] })
-    // First build has to be triggered manually.
-    await context.rebuild()
+    if (!watch) {
+      await context.rebuild() // First build has to be triggered manually.
+    }
   } catch (error) {
     // Won't keep watching if initial build fails.
     process.exit(1)

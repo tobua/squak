@@ -9,7 +9,7 @@ export const production = async () => {
 
   log('Pruning devDependencies...')
 
-  execSync('npm prune --production', { stdio: 'inherit', cwd: process.cwd() })
+  execSync('npm prune --production --legacy-peer-deps', { stdio: 'inherit', cwd: process.cwd() })
 
   log('Starting server...')
 
