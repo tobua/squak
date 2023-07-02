@@ -86,7 +86,7 @@ test('TypeScript Configuration is created.', () => {
   expect(contents.exclude).toContain('dist')
   expect(contents.compilerOptions.baseUrl).toEqual('.')
   expect(contents.compilerOptions.outDir).toEqual('dist')
-  expect(contents.compilerOptions.moduleResolution).toEqual('node')
+  expect(contents.compilerOptions.moduleResolution).toEqual('bundler')
   expect(contents.include).not.toBeDefined()
 })
 
