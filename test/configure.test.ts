@@ -30,7 +30,7 @@ test('Package.json is created properly.', () => {
 
   expect(Object.keys(contents.scripts).length).toBeGreaterThanOrEqual(1)
   expect(contents.type).toEqual('module')
-  expect(contents.engines.node).toEqual('>= 14')
+  expect(contents.engines.node).toEqual('>= 16')
   expect(contents.scripts.test).not.toBeDefined()
   expect(contents.jest).not.toBeDefined()
   expect(contents.prettier).toEqual(`./node_modules/squak/${hash}/.prettierrc.json`)
