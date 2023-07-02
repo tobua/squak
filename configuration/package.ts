@@ -19,7 +19,7 @@ export const packageJson = () => {
       extends: `.${sep}${join(hashPath(options), '.eslintrc.json')}`,
     },
     engines: {
-      node: '>= 14',
+      node: '>= 16',
     },
   }
 

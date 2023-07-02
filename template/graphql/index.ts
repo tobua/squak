@@ -1,9 +1,9 @@
 import express from 'express'
-import { graphqlHTTP } from 'express-graphql'
+import { graphqlHTTP } from 'express-graphql' // Deprecated, use graphql-http (is missing graphiql UI used below).
 import { buildSchema } from 'graphql'
 
 // Also consider using the more popular apollo-server-express package.
-// https://www.apollographql.com/docs/apollo-server/integrations/middleware#apollo-server-express
+// https://www.apollographql.com/docs/apollo-server/api/express-middleware
 
 const schema = buildSchema(`
   type Query {

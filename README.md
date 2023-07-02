@@ -26,7 +26,7 @@ This will automatically adapt your `package.json` and create the necessary confi
 // Bootstrap the default template in the current directory.
 npm init --yes now squak
 // Additional options:
-npm init --yes now squak [./my-web-server] [template = 'default' | 'empty' | 'full' | 'graphql']
+npm init --yes now squak [./my-web-server] [template = 'default' | 'empty' | 'full' | 'graphql' | 'serverless']
 ```
 
 The default template includes a basic [`express`](http://npmjs.com/express) server. Here are the [templates](https://github.com/tobua/squak/tree/main/template).
@@ -71,7 +71,7 @@ This plugin provides an extensive set of configurations aimed at working in vari
         // Overrides for the TypeScript configuration.
         tsconfig: {
             compilerOptions: {
-                moduleResolution: 'node'
+                moduleResolution: 'NodeNext'
             }
         },
         // Additional entries to be added to gitignore, default none.

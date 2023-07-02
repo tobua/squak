@@ -12,7 +12,7 @@ export const tsconfig = () => {
       target: 'esnext',
       module: 'esnext',
       esModuleInterop: true,
-      moduleResolution: 'node',
+      moduleResolution: 'bundler',
       skipLibCheck: true,
       forceConsistentCasingInFileNames: true,
       outDir: `../../../${options().output}`,
